@@ -1,0 +1,70 @@
+.leftcolumn {
+    float: left;
+    width: 70%;
+    /* height: 300px; only for demonstration, should be removed */
+    background: #ccc;
+    padding: 20px;
+}
+.rightcolumn{
+    float: left;
+    width: 30%;
+    /* height: 300px; only for demonstration, should be removed */
+    background: #ccc;
+    padding: 20px;
+
+}
+.label1{
+    margin-left: 10px;
+    width: 100px;
+    display: inline-block;
+}
+.label2{
+    margin-left: 10px;
+    width: 100px;
+    display: inline-block;
+}
+.label3{
+    margin-left: 10px;
+    margin-right:10px;
+    width: 60px;
+    display: inline-block;
+}
+select{
+    width: 85px;
+    text-align: left;
+    display: inline-block;
+    
+}
+input text{
+    margin-left: 0px;
+    padding: 0px 0px;
+}
+input date{
+    margin-left: 0px;
+    margin-right: 0px;
+    padding: 0px 0px;
+}
+
+input:focus {
+    display: inline-block;
+    background-color: rgb(198, 228, 198);
+}
+
+table th {
+    padding:0px;
+    margin:0px;
+}
+.table td {
+    padding:0px;
+    margin:0px;
+}
+.arTableInput:focus {
+    display: inline-block;
+    background-color: rgb(198, 228, 198);
+}
+@media (max-width: 600px) {
+    nav, article {
+      width: 100%;
+      height: auto;
+    }
+  }

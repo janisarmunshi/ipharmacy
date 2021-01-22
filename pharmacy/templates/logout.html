@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  {%load static%}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+    <style>
+        div.figure {
+        float: center;
+        width: 80%;
+        border: thin silver solid;
+        margin: 0.5em;
+        padding: 0.5em;
+        text-align: center;
+        font-style: italic;
+        font-size: smaller;
+        text-indent: 0;
+        }
+        img.scaled {
+        width: 50%;
+        }    
+    </style>
+  </head>
+  <body>
+
+    <div class=figure height:"400px">
+    <p><img class=scaled src="{% static gbimage  %}"  alt="Thank you, Taking a break!!!">
+    <p>Thank You.. Taking a break. Have some coffe!!! Login Again? <a href="/"> Login </a></p>
+    </div>
+
+  </body>
+</html>
+

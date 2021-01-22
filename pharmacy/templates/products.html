@@ -1,0 +1,301 @@
+{% extends 'base.html' %} 
+{% block title %} Item Master {% endblock%} 
+{% load static %} 
+
+{% block css %}
+<!-- Bootstrap CSS -->
+{% comment %} <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous" />
+<link href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css" /> {% endcomment %}
+<link href="{% static '/css/products.css' %}" rel="stylesheet" />
+{% endblock%} 
+<!-- Body STarts -->
+{% block content %}
+
+
+  <form method="POST" id="frmProduct">{% csrf_token %}
+  <input type="hidden" value= {{csrf_token}} name="txtcsrf" id="txtcsrf"> 
+
+    <div class = "Row">
+      <div class = "leftcolumn">
+
+        <div class="Row">
+          <label for="txtProductCode" class="label1">Product Code</label>
+          <input id = "txtProductCode" class="col-sm-2 col-md-2" Required>
+          <label for="txtProductName" class="label2">Name</label>
+          <input id = "txtProductName" class="col-sm-3 col-md-4" Required>
+          <label for="txtShortName" class="label1">Short Name</label>
+          <input id = "txtShortName" class="col-sm-2 col-md-2" Required>
+
+        </div>
+
+        <div class="Row">
+
+          <label for="txtBarcode" class="label1">Barcode</label>
+          <input id = "txtBarcode" class="col-sm-1 col-md-2" >
+          <label for="txtContent" class="label2">Content</label>
+
+            <select id="optContent"  class="col-sm-3 col-md-4">
+            <option>  </option>
+            {%for cnt in Content %}
+              <option value={{cnt.id}}> {{cnt.content_Name}} </option>
+            {% endfor %}
+            </select>       
+
+          <label for="txtVendorRef" class="label1">Vendor Ref</label>
+          <input id = "txtVendorRef" class="col-sm-2 col-md-2">
+
+        </div>
+
+        <div class="Row">
+          <label for="txtGSTName" class="label1">GST Name</label>
+          <input id = "txtGSTName" class="col-sm-1 col-md-2" >
+          <label for="txtGSTUnit" class="label2">GST Unit</label>
+          <input id = "txtGSTUnit" class="col-sm-1 col-md-1" >
+          <label for="txtSchedule" class="label3">Schedule</label>
+          <input id = "txtSchedule" class="col-sm-1 col-md-2" >
+          <label for="txtHSNCode" class="label1">HSN Code</label>
+          <input id = "txtHSNCode" class="col-sm-1 col-md-2" >
+
+        </div>
+
+        <div class="Row">
+          <label for="optCategory" class="label1">Categroy</label>
+            <select class="dropdown col-sm-1 col-md-2" type="dropdown" name="optCategory" id="optCategory" >
+            {%for cat in category%}
+              <option value={{ cat.id }}> {{cat.category_Name}} </option>
+            {% endfor %}
+            </select>
+          {% comment %} <input id = "txtCategory" class="col-sm-1 col-md-2" > {% endcomment %}
+
+          <label for="optSubcategory" class="label1">Sub Categroy</label>
+            <select class="dropdown col-sm-1 col-md-2" type="dropdown" name="optSubcategory" id="optSubcategory" >          
+            {%for subcat in subcateg%}
+              <option value={{ subcat.id }}> {{subcat.subcategory_Name}} </option>
+            {% endfor %}
+            </select>
+
+
+          <label for="txtClass" class="label3">Class</label>
+          <input id = "txtClass" class="col-sm-1 col-md-1" >
+
+        </div>
+
+        <div class="Row">
+          <label for="txtPacking" class="label1">Packing</label>
+          <input id = "txtPacking" class="col-sm-1 col-md-1" Required>
+          <select id="BUOM" onchange="buildSelect('AUOM','',this.value);"> 
+            <option> </option>
+            {%for u in UOM%}
+            <option value={{u.id}}>{{u.UOM_Code}}</option>
+            {%endfor%}
+          </select>
+
+          <label for="txtConvBaseUnit" class="label1">For BUOM</label>
+          <input id = "txtConvBaseUnit" class="col-sm-1 col-md-1" >
+          <label for="txtConvFactor" class="label1">Conv. Factor</label>
+          <input id = "txtConvFactor" class="col-sm-1 col-md-1" >
+          <select id="AUOM"> 
+            <option></option>
+
+          </select>
+
+        </div>
+
+        <div class="Row">
+          <label for="txtMfgBy" class="label1">Mfg. By</label>
+          <input id = "txtMfgBy" class="col-sm-1 col-md-2" >
+          <label for="txtMktBy" class="label2">Mkt. By</label>
+          <input id = "txtMktBy" class="col-sm-3 col-md-4" >
+          <label for="txtDivision" class="label1">Division of</label>
+          <input id = "txtDivision" class="col-sm-2 col-md-2">
+
+        </div>
+
+        <div class="Row">
+          <label for="txtPurchRate" class="label1">Purch. Rate</label>
+          <input id = "txtPurchRate" class="col-sm-1 col-md-1" >
+          <label for="txtSalesRate" class="label1">Sales. Rate</label>
+          <input id = "txtSalesRate" class="col-sm-1 col-md-1" >
+          <label for="txtMRP" class="label1">MRP</label>
+          <input id = "txtMRP" class="col-sm-1 col-md-1" >
+          <label for="txtDiscount" class="label1">Discount</label>
+          <input id = "txtDiscount" class="col-sm-1 col-md-1" >
+
+        </div>
+
+        <div class="Row">
+          <label for="SalesTaxGrp" class="label1">Sales Tax</label>
+          <select id="SalesTaxGrp" class="col-sm-1 col-md-2">  
+            <option></option>
+            {%for tGroup in TaxGroup%}
+            <option value={{tGroup.Tax_GrpCd}}>{{tGroup.Tax_Group}}</option>
+            {%endfor%}
+          </select>
+
+          <label for="PurchTaxGrp" class="label1">Purch. Tax</label>
+          <select id="PurchTaxGrp" class="col-sm-1 col-md-2"> 
+            <option></option>
+            {%for tGroup in TaxGroup%}
+            <option value={{tGroup.Tax_GrpCd}}>{{tGroup.Tax_Group}}</option>
+            {%endfor%}
+          </select>
+
+        </div>
+
+        <div class="Row">
+          <label for="txtMinStock" class="label1">Min. Stock</label>
+          <input id = "txtMinStock" class="col-sm-1 col-md-1" >
+          <label for="txtMaxStock" class="label1">Max. Stock</label>
+          <input id = "txtMaxStock" class="col-sm-1 col-md-1" >
+          <label for="txtMinOrdQty" class="label1">Min. Order</label>
+          <input id = "txtMinOrdQty" class="col-sm-1 col-md-1" >          
+          <label for="txtStoreLoc" class="label1">Rack #</label>
+          <input id = "txtStoreLoc" class="col-sm-1 col-md-1 " >
+
+        </div>
+
+      </div> <!-- End of Lef Column div -->
+      <div class = "rightcolumn"> <!-- Right Col Start-->
+        Right Column
+        <button type="button" class="btn btn-primary" id="showModal" tabindex="3" data-toggle="modal" data-target="#exampleModalCenter"
+        style="visibility: hidden"></button>
+
+      <!-- Modal -->
+      <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" 
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 1000px; left: -20px; top: -40px" >
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document" >
+          <div class="modal-content">
+            {% comment %}
+            <div class="modal-header">
+              {% endcomment %} {% comment %}
+              <h5 class="modal-title" id="exampleModalLongTitle"> Modal title </h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {% endcomment %} {% comment %}
+            </div>
+            {% endcomment %}
+            <div class="modal-body">
+              <div class="container" style="width: 100%">
+                <label for="txtSearch" id="lblSearch">Search</label>
+                <input type="text" id="txtSearch" tabindex="1" />
+                <table id="help" class="display" style="width: 100%" cellpadding="0" cellspacing="0" border="0" class="row-border" tabindex="0" >
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Name</th>
+                     </tr>
+                  </thead>
+                  <tfoot>
+                    <tr>
+                      <th>Id</th>
+                      <th>Name</th>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="hideModal" data-dismiss="modal" >&times;</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      </div> <!-- Right Col End-->
+    </div>
+
+    <div class = "Row"> <!-- Table Row Start-->
+
+      <div class="table table-responsive" style="height:280px;overflow:auto;">
+        <table id="tblProdBatch" class="table table-sm table-bordered" style="width: 70%; margin:0px; padding:0px;">
+      
+          <col style="width:6%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+          <col style="width:4%; display: inline-block;" />
+
+          <thead>
+            <tr > 
+              <th >Batch </th>
+              <th >Purch. Rate</th>
+              <th >Sale Rate</th>
+              <th >MRP</th>
+              <th >Mfg.Dt</th>
+              <th >Expiry.Dt</th>
+              <th >Disc%</th>
+              <th >Opn.Stk</th>
+              <th >Opn.Rate</th>
+              <th >Packing</th>
+              <th >Cl. Stk</th>
+            </tr>
+          </thead>
+
+          <tbody> 
+            <tr class="unit-table">            
+              <td ><input type="text" id ="__r1c1"  class="arTableInput arC1"  style="text-align:left; width:200px;" /> </td>
+              <td ><input type="text" id ="__r1c2"  class="arTableInput arC2"  style="text-align:right; width:120px;"/></td>
+              <td ><input type="text" id ="__r1c3"  class="arTableInput arC3"  style="text-align:right; width:120px;"/></td>
+              <td ><input type="text" id ="__r1c4"  class="arTableInput arC4"  style="text-align:right; width:120px;"/></td>
+              <td ><input type="date" id ="__r1c5"  class="arTableInput arC5"  style="text-align:right; width:140px;" /></td>
+              <td ><input type="date" id ="__r1c6"  class="arTableInput arC6"  style="text-align:right; width:140px;" /></td>
+              <td ><input type="text" id ="__r1c7"  class="arTableInput arC7"  style="text-align:right; width:100px;" /></td>
+              <td ><input type="text" id ="__r1c8"  class="arTableInput arC8"  style="text-align:right; width:100px;" /></td>
+              <td ><input type="text" id ="__r1c9" class="arTableInput arC9"   style="text-align:right; width:100px;" /></td>
+              <td ><input type="text" id ="__r1c10" class="arTableInput arC10" style="text-align:left; width:100px;" /></td>
+              <td ><input type="text" id ="__r1c11" class="arTableInput arC11 arLastCol" style="text-align:right; width:100px;" /></td>
+            </tr>
+
+          </tbody>          
+          {% comment %} <tfoot>
+            <tr >
+
+              <th >Batch </th>
+              <th >Purch. Rate</th>
+              <th >Sale Rate</th>
+              <th >MRP</th>
+              <th >Mfg.Dt</th>
+              <th >Expiry.Dt</th>
+              <th >Disc%</th>
+              <th >Opn.Stk</th>
+              <th >Opn.Rate</th>
+              <th >Packing</th>
+              <th >Closing Stk</th>
+            </tr>
+          </tfoot> {% endcomment %}
+        </table>
+      </div> <!-- Table Container Div End -->
+
+    </div> <!-- Table Row End-->
+
+
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" id="submit" class="btn btn-primary" onclick="productSave();">Save</button>
+      <button type="button" id="btnClear" class="btn btn-primary" onclick="clearForm();">Clear</button>
+      <button type="button" id="btnExit" class="btn btn-primary" onClick="location.href='home'">Exit</button>
+    </div>    
+    
+
+
+  </form>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/keytable/2.5.3/js/dataTables.keyTable.min.js"></script>
+  <script src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.min.js"> </script>
+ <script type="text/javascript" src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap.js"></script> 
+ <script src="https://cdn.datatables.net/1.10.22/js/dataTables.bootstrap4.min.js"></script>
+  <script   type="text/javascript"   src="https://cdn.datatables.net/select/1.3.1/js/dataTables.select.js"></script>
+  <script   type="text/javascript"   src="{% static '/scripts/arutils.js' %}"></script>
+  <script   type="text/javascript"   src="{% static '/scripts/arHelp.js' %}"></script>
+  <script   type="text/javascript"   src="{% static '/scripts/products.js' %}"></script>
+
+{% endblock%}
