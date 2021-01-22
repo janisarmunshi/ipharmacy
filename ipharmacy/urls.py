@@ -15,7 +15,8 @@ import pharmacy.views
 # Learn more here: https://docs.djangoproject.com/en/2.1/topics/http/urls/
 
 urlpatterns = [
-    path("", pharmacy.views.index, name="index"),
+    path("",pharmacy.views.login_request,name="login"),
+    path("home",pharmacy.views.index,name="index"),
     path("db/", pharmacy.views.db, name="db"),
     path("admin/", admin.site.urls),
 ]
