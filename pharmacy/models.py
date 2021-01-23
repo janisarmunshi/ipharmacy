@@ -6,7 +6,7 @@ class Greeting(models.Model):
 
 class company_Master(models.Model):
     company_Id = models.AutoField
-    company_Name = models.CharField(max_length=210)
+    company_Name = models.CharField(max_length=200)
     Estblish_Date = models.DateField(default='1900-01-01')
     city    = models.CharField(max_length=80, default='')
     state   = models.CharField(max_length=80, default='')
